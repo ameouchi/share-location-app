@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Share Location</title>
+    <style>
+      body { display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
+      button { border-radius: 100px; padding: 40px 80px; font-size: 30px; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <button onclick="shareLocation()">📍 Share Location</button>
+    <script>
+      function shareLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.watchPosition(position => {
+            fetch('https://location-server-7l5r.onrender.com/location', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                lat: position.coords.latitude,
+                lon: position.coords.longitude,
+                timestamp: Date.now()
+              })
+            });
+          });
+        } else {
+          alert("Geolocation not supported.");
+        }
+      }
+    </script>
+  </body>
+</html>
